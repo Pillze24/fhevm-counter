@@ -1,68 +1,75 @@
-FHECounter — FHEVM Encrypted Counter
+# FHECounter — FHEVM Example Contract
 
-This project demonstrates a minimal encrypted smart contract built using Zama’s FHEVM Solidity libraries.
+This repository demonstrates a minimal encrypted counter built using Zama’s FHEVM Solidity libraries.
 
-Overview
+The goal of this project is to show correct integration of Fully Homomorphic Encryption (FHE) types and operations in a smart contract context.
 
-The FHECounter contract stores a counter as an encrypted integer (euint32).
-All arithmetic operations are performed on encrypted values, ensuring that the counter value is never revealed on-chain.
+---
 
-Contract Behavior
+## Overview
 
-The counter is stored as an encrypted euint32
+The `FHECounter` contract stores a counter as an encrypted integer (`euint32`).
 
-The constructor initializes the counter using Fully Homomorphic Encryption
+All arithmetic operations are performed on encrypted values, meaning the counter value is never revealed on-chain.
 
-Users can increment the counter by providing encrypted input
+---
 
-The encrypted value can be retrieved, but cannot be decrypted on-chain
+## Contract Details
 
-Why Local Deployment and Tests Are Skipped
+- The counter is stored as an encrypted `euint32`
+- The constructor initializes the counter using `FHE.asEuint32(0)`
+- Users can increment the counter by providing an encrypted value
+- The encrypted counter can be read, but not decrypted, from the contract
 
-This contract relies on the FHEVM coprocessor to execute encrypted operations.
+---
 
-Standard EVM environments (such as Hardhat local network or Sepolia) do not support:
+## Why Local Tests Are Skipped
 
-FHE coprocessor execution
+This contract relies on the FHEVM coprocessor.
 
-Encrypted arithmetic
+Standard EVM environments (such as Hardhat local network) do not support:
 
-Key Management Service (KMS) verification
+- FHE coprocessor execution
+- Encrypted arithmetic
+- Key Management Service (KMS) verification
 
 As a result:
+- Local deployment and execution revert by design
+- This is expected behavior for FHEVM contracts
 
-Local deployment reverts by design
+For this reason, no local unit tests are included.
 
-Gas estimation fails due to unsupported encrypted execution
+---
 
-This behavior is expected and correct for FHEVM contracts
-
-Compilation
+## Compilation
 
 The contract compiles successfully using:
 
-Solidity ^0.8.24
+- Solidity `^0.8.24`
+- `@fhevm/solidity` official library
 
-Official @fhevm/solidity library
+Compilation is done with Hardhat.
 
-Compilation is performed locally to validate correctness, but execution requires an FHEVM-compatible network.
+---
 
-Deployment
+## Deployment
 
 This contract is intended to be deployed only on an FHEVM-compatible testnet.
 
-Deployment on standard EVM networks is intentionally skipped because encrypted operations require the FHEVM runtime environment.
+Local deployment is intentionally skipped because encrypted operations require the FHEVM runtime environment.
 
-Files
+---
 
-contracts/FHECounter.sol — Encrypted counter contract
+## Files
 
-hardhat.config.js — Solidity compiler configuration
+- `contracts/FHECounter.sol` — Encrypted counter contract
+- `hardhat.config.js` — Solidity compiler configuration
+- `scripts/deploy.js` — Deployment script (for FHEVM networks)
+- `README.md` — Project documentation
 
-scripts/deploy.js — Deployment script (FHEVM only)
+---
 
-README.md — Project documentation
+## Notes
 
-Notes
+This repository focuses on correct FHEVM contract structure and integration rather than local execution.
 
-This repository focuses on correct FHEVM integration and encrypted contract design rather than local execution.
